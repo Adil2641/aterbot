@@ -1,74 +1,41 @@
-import Mineflayer from 'mineflayer';
-import { sleep, getRandom } from "./utils.ts";
-import CONFIG from "../config.json" assert {type: 'json'};
+import { createClient } from 'bedrock-protocol';
+import CONFIG from '../config.json' assert { type: 'json' };
 
-let loop: NodeJS.Timeout;
-let bot: Mineflayer.Bot;
+let client;
+let serverStatus = 'offline'; // Track server status
 
-const disconnect = (): void => {
-	clearInterval(loop);
-	bot?.quit?.();
-	bot?.end?.();
-};
-const reconnect = async (): Promise<void> => {
-	console.log(`Trying to reconnect in ${CONFIG.action.retryDelay / 1000} seconds...\n`);
+function connectBot() {
+  client = createClient({
+    host: CONFIG.client.host,
+    port: +CONFIG.client.port,
+    username: CONFIG.client.username,
+    offline: true // Bedrock servers often use offline mode
+  });
 
-	disconnect();
-	await sleep(CONFIG.action.retryDelay);
-	createBot();
-	return;
-};
+  client.on('login', () => {
+    serverStatus = 'online';
+    console.log(`BedrockBot logged in as ${CONFIG.client.username}`);
+  });
 
-const createBot = (): void => {
-	bot = Mineflayer.createBot({
-		host: CONFIG.client.host,
-		port: +CONFIG.client.port,
-		username: CONFIG.client.username
-	} as const);
+  client.on('disconnect', (reason) => {
+    serverStatus = 'offline';
+    console.log('Disconnected:', reason);
+    setTimeout(connectBot, CONFIG.action.retryDelay || 15000);
+  });
 
+  client.on('end', () => {
+    serverStatus = 'offline';
+    console.log('Connection ended');
+  });
 
-	bot.once('error', error => {
-		console.error(`AFKBot got an error: ${error}`);
-	});
-	bot.once('kicked', rawResponse => {
-		console.error(`\n\nAFKbot is disconnected: ${rawResponse}`);
-	});
-	bot.once('end', () => void reconnect());
+  client.on('error', (err) => {
+    serverStatus = 'offline';
+    console.error('Error:', err);
+  });
+}
 
-	bot.once('spawn', () => {
-		const changePos = async (): Promise<void> => {
-			const lastAction = getRandom(CONFIG.action.commands) as Mineflayer.ControlState;
-			const halfChance: boolean = Math.random() < 0.5? true : false; // 50% chance to sprint
+export function getServerStatus() {
+  return serverStatus;
+}
 
-			console.debug(`${lastAction}${halfChance? " with sprinting" : ''}`);
-
-			bot.setControlState('sprint', halfChance);
-			bot.setControlState(lastAction, true); // starts the selected random action
-
-			await sleep(CONFIG.action.holdDuration);
-			bot.clearControlStates();
-			return;
-		};
-		const changeView = async (): Promise<void> => {
-			const yaw = (Math.random() * Math.PI) - (0.5 * Math.PI),
-				pitch = (Math.random() * Math.PI) - (0.5 * Math.PI);
-			
-			await bot.look(yaw, pitch, false);
-			return;
-		};
-		
-		loop = setInterval(() => {
-			changeView();
-			changePos();
-		}, CONFIG.action.holdDuration);
-	});
-	bot.once('login', () => {
-		console.log(`AFKBot logged in ${bot.username}\n\n`);
-	});
-};
-
-
-
-export default (): void => {
-	createBot();
-};
+export default connectBot;
