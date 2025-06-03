@@ -1,5 +1,21 @@
-import initBot from "./bot.ts";
+import connectBot from "./bot.ts";
 import initWeb from "./web.ts";
 
-initBot();
+connectBot();
 initWeb();
+
+// Auto-restart after 5 minutes
+setTimeout(() => {
+  console.log('Restarting project after 5 minutes...');
+  process.exit(0);
+}, 5 * 60 * 1000);
+
+const startTime = Date.now();
+export function getUptime() {
+  const ms = Date.now() - startTime;
+  const totalSeconds = Math.floor(ms / 1000);
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+  return `${hours}h ${minutes}m ${seconds}s`;
+}
