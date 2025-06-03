@@ -5,6 +5,7 @@ import CONFIG from '../config.json' assert { type: 'json' };
 import { getUptime } from './index.ts';
 
 const PORT = process.PORT || 5500;
+const BEDROCK_VERSION = "1.21.81.2";
 
 async function pingServerStatus() {
   try {
@@ -27,7 +28,7 @@ const server = HTTP.createServer(async (request, response) => {
 			"Access-Control-Allow-Origin": "*",
 			"Content-Type": "application/json"
 		});
-		response.end(JSON.stringify({ status, uptime }));
+		response.end(JSON.stringify({ status, uptime, version: BEDROCK_VERSION }));
 		return;
 	}
 
