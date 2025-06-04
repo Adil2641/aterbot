@@ -5,7 +5,7 @@ import CONFIG from '../config.json' assert { type: 'json' };
 import { getUptime } from './index.ts';
 
 const PORT = process.PORT || 5500;
-const BEDROCK_VERSION = "1.21.81.2";
+const BEDROCK_VERSION = "1.21.5 to 1.21.81.2";
 
 async function pingServerStatus() {
   try {
