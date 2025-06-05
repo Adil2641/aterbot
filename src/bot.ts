@@ -1,5 +1,5 @@
 import { createClient } from 'bedrock-protocol';
-import CONFIG from '../config.json' assert { type: 'json' };
+import CONFIG from '../config.json' with { type: 'json' };
 
 let client;
 let serverStatus = 'offline'; // Track server status
