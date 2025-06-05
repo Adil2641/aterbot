@@ -89,6 +89,33 @@ So just unban your bot, if it's banned.
 
 
 
+# Features 🚀
+- **Bedrock Bot Connection:** Automatically connects a bot to your Minecraft Bedrock server using configurable credentials.
+- **Auto-Reconnect:** The bot will auto-reconnect if disconnected and restarts every hour for reliability.
+- **Web Dashboard:** Built-in web server provides a status API, logs, and an admin dashboard for bot control and monitoring.
+- **Live Logs:** View real-time logs and server status from the web dashboard.
+- **Configurable:** All connection details are managed via `config.json`.
+- **Utility Functions:** Includes helpers for sleep and random selection.
+
+# Project Structure 🗂
+```
+Aternos-Bot/
+├── config.json         # Configuration for bot connection (host, port, username, etc.)
+├── package.json        # Project metadata and dependencies
+├── tsconfig.json       # TypeScript configuration
+├── src/
+│   ├── bot.ts          # Main bot logic: connects to server, handles events, status
+│   ├── index.ts        # Entry point: starts bot and web server, handles uptime/restart
+│   ├── utils.ts        # Utility functions (sleep, getRandom)
+│   ├── web.ts          # Web server: status API, admin dashboard, logs
+│   └── @types/         # TypeScript type definitions
+├── README.md           # Project documentation
+├── LICENSE             # License file
+└── ...                 # Other supporting files
+```
+
+
+
 # CAUTION ⚠
 ### Aternos might detect your suspicious actions and delete your account!  
-**By using this, you acknowledge that you're responsible for any problems arise.**  
+**By using this, you acknowledge that you're responsible for any problems arise.**
