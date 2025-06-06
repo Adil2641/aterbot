@@ -320,6 +320,20 @@ const server = HTTP.createServer(async (request, response) => {
     return;
   }
 
+  // Serve the logo image
+  if (request.url === '/logo.png') {
+    const fs = await import('node:fs/promises');
+    try {
+      const img = await fs.readFile('./Image/logo.png');
+      response.writeHead(200, { 'Content-Type': 'image/png' });
+      response.end(img);
+    } catch (e) {
+      response.writeHead(404);
+      response.end('Not found');
+    }
+    return;
+  }
+
   // Prepare server address for client-side use
   const serverAddress = `${CONFIG.client.host}:${CONFIG.client.port}`;
 
@@ -428,7 +442,7 @@ const server = HTTP.createServer(async (request, response) => {
       <body>
         <div class="main-header"><span class="icon">⛏️</span> Minecraft Server Info</div>
         <div class="main-container">
-          <img class="minecraft-img" src="https://static.wikia.nocookie.net/minecraft_gamepedia/images/0/09/Grass_Block_JE6_BE3.png" alt="Minecraft Grass Block" />
+          <img class="minecraft-img" src="/logo.png" alt="Minecraft Logo" />
           <div class="info"><b>Host:</b> ${CONFIG.client.host}</div>
           <div class="info"><b>Port:</b> ${CONFIG.client.port}</div>
           <div class="info"><b>Bot Username:</b> ${CONFIG.client.username}</div>
