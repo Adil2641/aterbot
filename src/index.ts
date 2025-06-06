@@ -4,12 +4,6 @@ import initWeb from "./web.ts";
 connectBot();
 initWeb();
 
-// Restart every 1 hour
-setInterval(() => {
-  console.log('Restarting project (every 1 hour)...');
-  process.exit(0);
-}, 60 * 60 * 1000);
-
 const startTime = Date.now();
 export function getUptime() {
   const ms = Date.now() - startTime;
