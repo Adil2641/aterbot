@@ -5,9 +5,14 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  bedrock-protocol:
+    specifier: ^3.56.1
+    version: 3.56.1
+
   mineflayer:
-    specifier: ^4.20.0
-    version: 4.20.0
+    specifier: ^4.37.1
+    version: 4.37.1
+
   tsx:
     specifier: ^4.7.1
     version: 4.7.1
