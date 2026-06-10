@@ -8,7 +8,7 @@
 		"dev": "node --inspect --loader tsx ./src/index.ts"
 	},
 	"dependencies": {
-		"bedrock-protocol": "^3.45.0",
+		"bedrock-protocol": "^3.56.1",
 		"mineflayer": "^4.29.0",
 		"tsx": "^4.7.1"
 	}
