@@ -9,7 +9,7 @@
 	},
 	"dependencies": {
 		"bedrock-protocol": "^3.56.1",
-		"mineflayer": "^4.29.0",
+		"mineflayer": "4.37.1 ",
 		"tsx": "^4.7.1"
 	}
 }
